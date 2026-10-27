@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:replace="~{::title}">Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>"/>
+</head>
+<body>
+
+<!-- Navbar -->
+<header th:fragment="navbar">
+    <nav class="navbar">
+        <a class="brand" th:href="@{/home}">🎓 Moeda <span>Estudantil</span></a>
+        <nav sec:authorize="isAuthenticated()">
+            <a th:href="@{/alunos}">Alunos</a>
+            <a th:href="@{/empresas}">Empresas</a>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn-logout">Sair</button>
+            </form>
+        </nav>
+    </nav>
+</header>
+
+<!-- Flash messages -->
+<div th:fragment="flash">
+    <div class="alert alert-success" th:if="${sucesso}">
+        ✅ <span th:text="${sucesso}"></span>
+    </div>
+    <div class="alert alert-error" th:if="${erro}">
+        ❌ <span th:text="${erro}"></span>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer th:fragment="footer">
+    <p>Sistema de Moeda Estudantil &mdash; PUC Minas &mdash; Laboratório 3 &mdash; 2026</p>
+</footer>
+
+</body>
+</html>

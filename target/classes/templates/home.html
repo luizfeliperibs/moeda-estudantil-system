@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Início — Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <main>
+        <div class="page-header">
+            <h1>🏠 Painel</h1>
+        </div>
+
+        <div th:replace="~{layout/base :: flash}"></div>
+
+        <p style="color:#64748b;margin-bottom:.5rem">
+            Bem-vindo, <strong sec:authentication="name">usuário</strong>!
+        </p>
+
+        <div class="home-grid">
+            <div class="home-card">
+                <h2>👩‍🎓 Alunos</h2>
+                <p>Gerencie o cadastro de alunos da instituição.</p>
+                <a class="btn btn-primary" th:href="@{/alunos}">Ver Alunos</a>
+            </div>
+            <div class="home-card">
+                <h2>🏢 Empresas Parceiras</h2>
+                <p>Gerencie as empresas parceiras e suas vantagens.</p>
+                <a class="btn btn-primary" th:href="@{/empresas}">Ver Empresas</a>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/base :: footer}"></div>
+</body>
+</html>

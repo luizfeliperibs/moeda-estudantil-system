@@ -1,0 +1,4 @@
+com\moedaestudantil\MoedaEstudantilApplicationTests.class
+com\moedaestudantil\service\EmpresaServiceTest.class
+com\moedaestudantil\repository\InstituicaoEnsinoRepositoryTest.class
+com\moedaestudantil\service\AlunoServiceTest.class

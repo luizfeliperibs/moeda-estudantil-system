@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${form.id == null ? 'Novo Aluno' : 'Editar Aluno'} + ' — Moeda Estudantil'">Aluno — Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <main>
+        <div class="page-header">
+            <h1 th:text="${form.id == null ? '➕ Novo Aluno' : '✏️ Editar Aluno'}">Aluno</h1>
+            <a class="btn btn-outline" th:href="@{/alunos}">← Voltar</a>
+        </div>
+
+        <!-- Erro de negócio (CPF/e-mail duplicado etc.) -->
+        <div class="alert alert-error" th:if="${erro}">
+            ❌ <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <!-- Ação dinâmica: criação ou edição -->
+            <form th:action="${form.id == null ? '/alunos' : '/alunos/' + form.id}"
+                  th:object="${form}" method="post" novalidate>
+
+                <div class="form-grid">
+
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="nome">Nome completo *</label>
+                        <input type="text" id="nome" th:field="*{nome}"
+                               th:classappend="${#fields.hasErrors('nome')} ? 'invalid'"
+                               placeholder="João da Silva"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('nome')}"
+                              th:errors="*{nome}"></span>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" th:field="*{email}"
+                               th:classappend="${#fields.hasErrors('email')} ? 'invalid'"
+                               placeholder="joao@exemplo.com"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}"></span>
+                    </div>
+
+                    <!-- CPF -->
+                    <div class="form-group">
+                        <label for="cpf">CPF *</label>
+                        <input type="text" id="cpf" th:field="*{cpf}"
+                               th:classappend="${#fields.hasErrors('cpf')} ? 'invalid'"
+                               placeholder="000.000.000-00" maxlength="14"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('cpf')}"
+                              th:errors="*{cpf}"></span>
+                    </div>
+
+                    <!-- RG -->
+                    <div class="form-group">
+                        <label for="rg">RG</label>
+                        <input type="text" id="rg" th:field="*{rg}" placeholder="MG-00.000.000"/>
+                    </div>
+
+                    <!-- Curso -->
+                    <div class="form-group">
+                        <label for="curso">Curso *</label>
+                        <input type="text" id="curso" th:field="*{curso}"
+                               th:classappend="${#fields.hasErrors('curso')} ? 'invalid'"
+                               placeholder="Engenharia de Software"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('curso')}"
+                              th:errors="*{curso}"></span>
+                    </div>
+
+                    <!-- Instituição -->
+                    <div class="form-group">
+                        <label for="instituicaoId">Instituição de Ensino *</label>
+                        <select id="instituicaoId" th:field="*{instituicaoId}"
+                                th:classappend="${#fields.hasErrors('instituicaoId')} ? 'invalid'">
+                            <option value="">Selecione...</option>
+                            <option th:each="inst : ${instituicoes}"
+                                    th:value="${inst.id}"
+                                    th:text="${inst.nome}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('instituicaoId')}"
+                              th:errors="*{instituicaoId}"></span>
+                    </div>
+
+                    <!-- Endereço -->
+                    <div class="form-group full">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" th:field="*{endereco}"
+                               placeholder="Rua Exemplo, 123, Bairro, Cidade - UF"/>
+                    </div>
+
+                    <!-- Login e Senha — apenas no cadastro -->
+                    <div class="form-group" th:if="${form.id == null}">
+                        <label for="login">Login *</label>
+                        <input type="text" id="login" th:field="*{login}"
+                               th:classappend="${#fields.hasErrors('login')} ? 'invalid'"
+                               placeholder="joao.silva" autocomplete="username"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('login')}"
+                              th:errors="*{login}"></span>
+                    </div>
+
+                    <div class="form-group" th:if="${form.id == null}">
+                        <label for="senha">Senha * <small style="font-weight:400;text-transform:none">(mín. 6 caracteres)</small></label>
+                        <input type="password" id="senha" th:field="*{senha}"
+                               th:classappend="${#fields.hasErrors('senha')} ? 'invalid'"
+                               placeholder="••••••" autocomplete="new-password"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('senha')}"
+                              th:errors="*{senha}"></span>
+                    </div>
+
+                </div><!-- /form-grid -->
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"
+                            th:text="${form.id == null ? 'Cadastrar Aluno' : 'Salvar Alterações'}">
+                        Salvar
+                    </button>
+                    <a class="btn btn-outline" th:href="@{/alunos}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/base :: footer}"></div>
+</body>
+</html>

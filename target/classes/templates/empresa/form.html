@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${form.id == null ? 'Nova Empresa' : 'Editar Empresa'} + ' — Moeda Estudantil'">Empresa — Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <main>
+        <div class="page-header">
+            <h1 th:text="${form.id == null ? '➕ Nova Empresa Parceira' : '✏️ Editar Empresa Parceira'}">Empresa</h1>
+            <a class="btn btn-outline" th:href="@{/empresas}">← Voltar</a>
+        </div>
+
+        <div class="alert alert-error" th:if="${erro}">
+            ❌ <span th:text="${erro}"></span>
+        </div>
+
+        <div class="card">
+            <form th:action="${form.id == null ? '/empresas' : '/empresas/' + form.id}"
+                  th:object="${form}" method="post" novalidate>
+
+                <div class="form-grid">
+
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="nome">Razão Social / Nome *</label>
+                        <input type="text" id="nome" th:field="*{nome}"
+                               th:classappend="${#fields.hasErrors('nome')} ? 'invalid'"
+                               placeholder="Empresa Exemplo Ltda"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('nome')}"
+                              th:errors="*{nome}"></span>
+                    </div>
+
+                    <!-- CNPJ -->
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ *</label>
+                        <input type="text" id="cnpj" th:field="*{cnpj}"
+                               th:classappend="${#fields.hasErrors('cnpj')} ? 'invalid'"
+                               placeholder="00.000.000/0000-00" maxlength="18"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('cnpj')}"
+                              th:errors="*{cnpj}"></span>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="form-group full">
+                        <label for="email">E-mail de contato</label>
+                        <input type="email" id="email" th:field="*{email}"
+                               th:classappend="${#fields.hasErrors('email')} ? 'invalid'"
+                               placeholder="contato@empresa.com"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}"></span>
+                    </div>
+
+                    <!-- Login e Senha — apenas no cadastro -->
+                    <div class="form-group" th:if="${form.id == null}">
+                        <label for="login">Login *</label>
+                        <input type="text" id="login" th:field="*{login}"
+                               th:classappend="${#fields.hasErrors('login')} ? 'invalid'"
+                               placeholder="empresa.exemplo" autocomplete="username"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('login')}"
+                              th:errors="*{login}"></span>
+                    </div>
+
+                    <div class="form-group" th:if="${form.id == null}">
+                        <label for="senha">Senha * <small style="font-weight:400;text-transform:none">(mín. 6 caracteres)</small></label>
+                        <input type="password" id="senha" th:field="*{senha}"
+                               th:classappend="${#fields.hasErrors('senha')} ? 'invalid'"
+                               placeholder="••••••" autocomplete="new-password"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('senha')}"
+                              th:errors="*{senha}"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"
+                            th:text="${form.id == null ? 'Cadastrar Empresa' : 'Salvar Alterações'}">
+                        Salvar
+                    </button>
+                    <a class="btn btn-outline" th:href="@{/empresas}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/base :: footer}"></div>
+</body>
+</html>

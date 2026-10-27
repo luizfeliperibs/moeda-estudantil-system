@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Confirmar Exclusão — Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <main>
+        <div class="page-header">
+            <h1>🗑️ Confirmar Exclusão</h1>
+            <a class="btn btn-outline" th:href="@{/alunos}">← Voltar</a>
+        </div>
+
+        <div class="card confirm-box">
+            <h2>Excluir Aluno</h2>
+            <p>
+                Tem certeza que deseja excluir o aluno
+                <strong th:text="${aluno.nome}">Nome</strong>?
+                Esta ação não pode ser desfeita.
+            </p>
+            <div class="confirm-actions">
+                <form th:action="@{/alunos/{id}/excluir(id=${aluno.id})}" method="post">
+                    <button type="submit" class="btn btn-danger">Sim, excluir</button>
+                </form>
+                <a class="btn btn-outline" th:href="@{/alunos}">Cancelar</a>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/base :: footer}"></div>
+</body>
+</html>
