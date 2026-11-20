@@ -10,6 +10,10 @@ public interface VantagemRepository extends JpaRepository<Vantagem, Long> {
 
     List<Vantagem> findByEmpresaId(Long empresaId);
 
+    List<Vantagem> findByEmpresaIdOrderByNomeAsc(Long empresaId);
+
+    List<Vantagem> findAllByOrderByNomeAsc();
+
     /** Verifica se a empresa tem vantagens já resgatadas (bloqueio de exclusão). */
     @Query("""
         SELECT COUNT(r) > 0
@@ -17,4 +21,12 @@ public interface VantagemRepository extends JpaRepository<Vantagem, Long> {
         WHERE r.vantagem.empresa.id = :empresaId
     """)
     boolean empresaTemVantagensResgatadas(@Param("empresaId") Long empresaId);
+
+    /** Verifica se a vantagem já foi resgatada (bloqueio de exclusão). */
+    @Query("""
+        SELECT COUNT(r) > 0
+        FROM ResgateVantagem r
+        WHERE r.vantagem.id = :vantagemId
+    """)
+    boolean temResgates(@Param("vantagemId") Long vantagemId);
 }

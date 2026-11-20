@@ -22,6 +22,31 @@
         </p>
 
         <div class="home-grid">
+            <div class="home-card" sec:authorize="hasRole('PROFESSOR')">
+                <h2>🪙 Enviar moedas</h2>
+                <p>Reconheça o mérito de um aluno enviando moedas com um motivo.</p>
+                <a class="btn btn-primary" th:href="@{/professor/enviar}">Enviar</a>
+            </div>
+            <div class="home-card" sec:authorize="hasRole('PROFESSOR')">
+                <h2>📄 Meu extrato</h2>
+                <p>Veja seu saldo e as moedas que você enviou.</p>
+                <a class="btn btn-primary" th:href="@{/professor/extrato}">Ver extrato</a>
+            </div>
+            <div class="home-card" sec:authorize="hasRole('ALUNO')">
+                <h2>🎁 Vantagens</h2>
+                <p>Troque suas moedas por produtos e descontos.</p>
+                <a class="btn btn-primary" th:href="@{/aluno/vantagens}">Ver vantagens</a>
+            </div>
+            <div class="home-card" sec:authorize="hasRole('ALUNO')">
+                <h2>📄 Meu extrato</h2>
+                <p>Veja seu saldo, moedas recebidas e resgates.</p>
+                <a class="btn btn-primary" th:href="@{/aluno/extrato}">Ver extrato</a>
+            </div>
+            <div class="home-card" sec:authorize="hasRole('EMPRESA')">
+                <h2>🏷️ Minhas vantagens</h2>
+                <p>Cadastre e gerencie as vantagens oferecidas aos alunos.</p>
+                <a class="btn btn-primary" th:href="@{/empresa/vantagens}">Gerenciar</a>
+            </div>
             <div class="home-card">
                 <h2>👩‍🎓 Alunos</h2>
                 <p>Gerencie o cadastro de alunos da instituição.</p>

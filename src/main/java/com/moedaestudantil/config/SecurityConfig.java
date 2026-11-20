@@ -52,6 +52,10 @@ public class SecurityConfig {
                 // Cadastro de aluno e empresa são públicos
                 .requestMatchers("/alunos/novo", "/alunos").permitAll()
                 .requestMatchers("/empresas/novo", "/empresas").permitAll()
+                // Áreas por perfil
+                .requestMatchers("/professor/**").hasRole("PROFESSOR")
+                .requestMatchers("/aluno/**").hasRole("ALUNO")
+                .requestMatchers("/empresa/**").hasRole("EMPRESA")
                 // Demais rotas exigem autenticação
                 .anyRequest().authenticated()
             )

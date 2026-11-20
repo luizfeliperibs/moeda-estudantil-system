@@ -1,0 +1,37 @@
+@startuml visao-geral-interacao
+title Diagrama de Visão Geral de Interação — Moeda Estudantil
+start
+:Acessar /login;
+:Autenticar (login e senha);
+if (credenciais válidas?) then (não)
+  :Exibir erro em /login;
+  stop
+else (sim)
+endif
+:Redirecionar para /home conforme o perfil;
+switch (perfil)
+case (PROFESSOR)
+  split
+    :ref: sequencia-envio-moedas;
+  split again
+    :Consultar extrato de envios\nGET /professor/extrato;
+  end split
+case (ALUNO)
+  split
+    :Consultar extrato\nGET /aluno/extrato;
+  split again
+    :Ver catálogo de vantagens\nGET /aluno/vantagens;
+    :ref: sequencia-resgate;
+  end split
+case (EMPRESA)
+  :Gerenciar vantagens (com foto)\n/empresa/vantagens;
+endswitch
+:Logout;
+stop
+
+note right
+  Fora do fluxo do usuário:
+  Agendador credita 1.000 moedas
+  aos professores (1º/jan e 1º/jul).
+end note
+@enduml

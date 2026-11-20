@@ -1,0 +1,49 @@
+@startuml sequencia-envio-moedas
+title Diagrama de Sequência — Envio de Moedas (UC06 + UC07)
+autonumber
+
+actor Professor
+participant "View\n(professor/enviar.html)" as View
+participant "ProfessorController" as C
+participant "TransacaoService" as S
+participant "ProfessorRepository" as PR
+participant "AlunoRepository" as AR
+participant "EnvioMoedasRepository" as ER
+participant "NotificacaoListener" as L
+participant "EmailService" as E
+database "Banco de dados" as DB
+
+Professor -> View : preenche aluno, valor e motivo
+View -> C : POST /professor/enviar (EnvioMoedasForm)
+C -> C : @Valid (aluno, valor ≥ 1, motivo não vazio)
+alt formulário inválido
+  C --> View : reexibe formulário com erros
+else formulário válido
+  C -> S : enviarMoedas(login do Principal, form)
+  activate S
+  note right of S : @Transactional
+  S -> PR : buscarParaAtualizarPorLogin(login)
+  PR -> DB : SELECT ... FOR UPDATE
+  S -> AR : buscarParaAtualizar(alunoId)
+  AR -> DB : SELECT ... FOR UPDATE
+  alt aluno de outra instituição
+    S --> C : RegraDeNegocioException
+    C --> View : mensagem de erro
+  else saldo do professor < valor
+    S --> C : RegraDeNegocioException("Saldo insuficiente")
+    C --> View : mensagem de erro
+  else regras satisfeitas
+    S -> S : professor.saldo -= valor\naluno.saldo += valor
+    S -> PR : save(professor)
+    S -> AR : save(aluno)
+    S -> ER : save(EnvioMoedas)
+    ER -> DB : INSERT transacao + envio_moedas
+    S ->> L : publishEvent(EnvioMoedasRealizado)
+    S --> C : EnvioMoedas
+    deactivate S
+    note over S, DB : COMMIT
+    L -> E : enviar(emailDoAluno, assunto, corpo)\n[AFTER_COMMIT]
+    C --> View : redirect /professor/enviar\n("Moedas enviadas com sucesso!")
+  end
+end
+@enduml

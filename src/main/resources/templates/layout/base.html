@@ -15,6 +15,15 @@
     <nav class="navbar">
         <a class="brand" th:href="@{/home}">🎓 Moeda <span>Estudantil</span></a>
         <nav sec:authorize="isAuthenticated()">
+            <th:block sec:authorize="hasRole('PROFESSOR')">
+                <a th:href="@{/professor/enviar}">Enviar moedas</a>
+                <a th:href="@{/professor/extrato}">Extrato</a>
+            </th:block>
+            <th:block sec:authorize="hasRole('ALUNO')">
+                <a th:href="@{/aluno/vantagens}">Vantagens</a>
+                <a th:href="@{/aluno/extrato}">Extrato</a>
+            </th:block>
+            <a sec:authorize="hasRole('EMPRESA')" th:href="@{/empresa/vantagens}">Minhas vantagens</a>
             <a th:href="@{/alunos}">Alunos</a>
             <a th:href="@{/empresas}">Empresas</a>
             <form th:action="@{/logout}" method="post" style="display:inline">

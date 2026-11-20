@@ -7,4 +7,6 @@ import java.util.List;
 public interface EnvioMoedasRepository extends JpaRepository<EnvioMoedas, Long> {
     List<EnvioMoedas> findByAlunoId(Long alunoId);
     List<EnvioMoedas> findByProfessorId(Long professorId);
+    List<EnvioMoedas> findByAlunoIdOrderByDataHoraDesc(Long alunoId);
+    List<EnvioMoedas> findByProfessorIdOrderByDataHoraDesc(Long professorId);
 }

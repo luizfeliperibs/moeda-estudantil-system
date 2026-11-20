@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface ResgateVantagemRepository extends JpaRepository<ResgateVantagem, Long> {
     Optional<ResgateVantagem> findByCodigo(String codigo);
+    boolean existsByCodigo(String codigo);
     List<ResgateVantagem> findByAlunoId(Long alunoId);
+    List<ResgateVantagem> findByAlunoIdOrderByDataHoraDesc(Long alunoId);
 }

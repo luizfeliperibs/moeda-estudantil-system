@@ -291,3 +291,40 @@ footer {
     font-size: .8rem;
     margin-top: auto;
 }
+
+/* ---- Saldo, extrato e vantagens ---- */
+.saldo { font-size: 1rem; color: var(--color-muted); }
+.saldo strong { color: var(--color-primary); font-size: 1.3rem; }
+.valor-entrada { color: var(--color-success); font-weight: 600; }
+.valor-saida   { color: var(--color-danger);  font-weight: 600; }
+input[type="number"], input[type="file"] {
+    padding: .6rem .85rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: .9rem;
+    background: #fff;
+    width: 100%;
+}
+input[type="number"].invalid, textarea.invalid { border-color: var(--color-danger); }
+.thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius); }
+.vantagem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.vantagem-card {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.vantagem-card img { width: 100%; height: 160px; object-fit: cover; }
+.vantagem-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
+.vantagem-body h2 { font-size: 1.05rem; color: var(--color-primary); }
+.vantagem-body small { color: var(--color-muted); }
+.vantagem-body p { font-size: .875rem; color: var(--color-text); flex: 1; }
+.vantagem-rodape { display: flex; justify-content: space-between; align-items: center; margin-top: .5rem; }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Extrato — Moeda Estudantil</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div th:replace="~{layout/base :: navbar}"></div>
+
+    <main>
+        <div class="page-header">
+            <h1>📄 Extrato do professor</h1>
+            <span class="saldo">Saldo: <strong th:text="${professor.saldo}">0</strong> moedas</span>
+        </div>
+
+        <div th:replace="~{layout/base :: flash}"></div>
+
+        <div th:if="${#lists.isEmpty(itens)}" class="card" style="text-align:center;color:#64748b;padding:3rem">
+            Você ainda não enviou moedas.
+        </div>
+
+        <div class="table-wrapper" th:unless="${#lists.isEmpty(itens)}">
+            <table>
+                <thead>
+                    <tr><th>Data</th><th>Descrição</th><th>Moedas</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="i : ${itens}">
+                        <td th:text="${#temporals.format(i.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${i.descricao}"></td>
+                        <td th:text="${i.valor}" th:classappend="${i.valor < 0} ? 'valor-saida' : 'valor-entrada'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div th:replace="~{layout/base :: footer}"></div>
+</body>
+</html>

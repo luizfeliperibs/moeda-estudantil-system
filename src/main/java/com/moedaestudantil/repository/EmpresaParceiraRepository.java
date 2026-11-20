@@ -8,6 +8,8 @@ public interface EmpresaParceiraRepository extends JpaRepository<EmpresaParceira
 
     Optional<EmpresaParceira> findByCnpj(String cnpj);
 
+    Optional<EmpresaParceira> findByLogin(String login);
+
     boolean existsByCnpj(String cnpj);
 
     boolean existsByCnpjAndIdNot(String cnpj, Long id);

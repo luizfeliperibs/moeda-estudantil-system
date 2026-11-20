@@ -47,6 +47,12 @@ public class AlunoService {
                 .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado: " + id));
     }
 
+    @Transactional(readOnly = true)
+    public Aluno buscarPorLogin(String login) {
+        return alunoRepository.findByLogin(login)
+                .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado: " + login));
+    }
+
     /**
      * Cria Usuario + Aluno com senha em BCrypt e perfil ALUNO.
      * Rejeita CPF ou e-mail duplicado com RegraDeNegocioException.

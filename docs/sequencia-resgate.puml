@@ -1,0 +1,46 @@
+@startuml sequencia-resgate
+title Diagrama de Sequência — Resgate de Vantagem (UC10 + UC11)
+autonumber
+
+actor Aluno
+participant "View\n(aluno/vantagens.html)" as View
+participant "AlunoPainelController" as C
+participant "TransacaoService" as S
+participant "AlunoRepository" as AR
+participant "VantagemRepository" as VR
+participant "ResgateVantagemRepository" as RR
+participant "NotificacaoListener" as L
+participant "EmailService" as E
+database "Banco de dados" as DB
+
+Aluno -> View : clica em "Resgatar"
+View -> C : POST /aluno/vantagens/{id}/resgatar
+C -> S : resgatar(login do Principal, vantagemId)
+activate S
+note right of S : @Transactional
+S -> AR : buscarParaAtualizarPorLogin(login)
+AR -> DB : SELECT ... FOR UPDATE
+S -> VR : findById(vantagemId)
+alt saldo do aluno < custo
+  S --> C : RegraDeNegocioException("Saldo insuficiente")
+  C --> View : redirect com mensagem de erro
+else saldo suficiente
+  S -> S : aluno.saldo -= custo
+  S -> AR : save(aluno)
+  loop até 5 tentativas
+    S -> RR : existsByCodigo(codigo)
+  end
+  S -> RR : save(ResgateVantagem com código único)
+  RR -> DB : INSERT transacao + resgate_vantagem
+  S ->> L : publishEvent(ResgateRealizado)
+  S --> C : ResgateVantagem
+  deactivate S
+  note over S, DB : COMMIT
+  par [AFTER_COMMIT]
+    L -> E : enviar(emailDoAluno, cupom + código)
+  and
+    L -> E : enviar(emailDaEmpresa, conferência + mesmo código)
+  end
+  C --> View : redirect /aluno/vantagens\n("Resgate realizado! Código ...")
+end
+@enduml
